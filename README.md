@@ -18,8 +18,10 @@ Each example assumes you have started a Prolog session in the repository root.
 ?- assert(system(chatbot1)).
 ?- assert(rule(chatbot1, r_speed, user_asks_question, generate_answer)).
 ?- assert(rule(chatbot1, r_hint,  user_asks_question, provide_hint)).
+?- assert(rule(chatbot1, r_verify, user_asks_question, ask_follow_up_question)).
 ?- assert(priority(chatbot1, r_speed, 10)).
 ?- assert(priority(chatbot1, r_hint,  5)).
+?- assert(priority(chatbot1, r_verify, 4)).
 ?- assert(ethical_rule(chatbot1, autonomy)).
 ?- assert(ethical_rule(chatbot1, truthfulness)).
 ?- assert(function(chatbot1, teach_reasoning)).
@@ -80,7 +82,7 @@ Find all possible human effects of rules triggered by a user activity:
 ```prolog
 ?- priority_conflict(chatbot1, Rule1, Rule2, ConflictType).
 % Rule1        = r_speed
-% Rule2        = r_hint
+% Rule2        = r_verify
 % ConflictType = speed_over_verification
 ```
 

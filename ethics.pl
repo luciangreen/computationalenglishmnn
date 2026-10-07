@@ -68,11 +68,13 @@ safeguard_required(truthfulness).
 
 %% ethical_assessment(+System, +Principle, -Status, -EvidenceLevel)
 %% Returns status: declared / missing / conflicted / unknown.
-ethical_assessment(System, Principle, declared, observed) :-
-    ethical_rule(System, Principle).
-ethical_assessment(System, Principle, missing, inferred) :-
-    \+ ethical_rule(System, Principle),
-    known_ethical_principle(Principle).
 ethical_assessment(System, Principle, conflicted, inferred) :-
     ethical_rule(System, Principle),
-    ethical_conflict(System, Principle, _).
+    ethical_conflict(System, Principle, _), !.
+ethical_assessment(System, Principle, declared, observed) :-
+    ethical_rule(System, Principle), !.
+ethical_assessment(System, Principle, missing, inferred) :-
+    \+ ethical_rule(System, Principle),
+    known_ethical_principle(Principle), !.
+ethical_assessment(_, Principle, unknown, unknown) :-
+    \+ known_ethical_principle(Principle).

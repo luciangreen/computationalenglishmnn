@@ -13,7 +13,6 @@
 ]).
 
 :- use_module(parser).
-:- use_module(evidence).
 
 %% Ordering of complexity classes from lowest to highest.
 complexity_order(o_1,     1).
@@ -41,7 +40,9 @@ compare_complexities(C1, C2, unknown) :-
 human_time_cost(o_1,     _,                    waiting_time_minimal).
 human_time_cost(o_log_n, _,                    waiting_time_low).
 human_time_cost(o_n,     _,                    waiting_time_moderate).
+human_time_cost(o_n_log_n, _,                  waiting_time_moderate).
 human_time_cost(o_n2,    _,                    waiting_time_high).
+human_time_cost(o_n3,    _,                    waiting_time_very_high).
 human_time_cost(o_exp,   _,                    waiting_time_very_high).
 %% Fast generation enables cheap repeated queries — additional human cost.
 human_time_cost(o_1,     interactive,          repetition_time_risk).
@@ -65,6 +66,7 @@ time_influence_from_complexity(o_log_n,   low_waiting,     low).
 time_influence_from_complexity(o_n,       linear_waiting,  moderate).
 time_influence_from_complexity(o_n_log_n, moderate_waiting,moderate).
 time_influence_from_complexity(o_n2,      high_waiting,    high).
+time_influence_from_complexity(o_n3,      very_high_waiting, high).
 time_influence_from_complexity(o_exp,     very_high_waiting, high).
 
 %% space_influence(+System, +Operation, -Mechanism, -Assessment)
@@ -75,6 +77,9 @@ space_influence(System, Operation, Mechanism, Assessment) :-
     space_influence_from_complexity(Complexity, Mechanism, Assessment).
 
 space_influence_from_complexity(o_1,   minimal_information_volume, low).
+space_influence_from_complexity(o_log_n, logarithmic_information_volume, low).
 space_influence_from_complexity(o_n,   proportional_information_volume, moderate).
+space_influence_from_complexity(o_n_log_n, superlinear_information_volume, high).
 space_influence_from_complexity(o_n2,  large_information_volume,  high).
+space_influence_from_complexity(o_n3,  very_large_information_volume, high).
 space_influence_from_complexity(o_exp, very_large_information_volume, high).

@@ -11,6 +11,7 @@
 ]).
 
 :- use_module(parser).
+:- use_module(library(lists), [max_member/2, nth1/3]).
 
 %% priority_influence(+System, +HigherPriority, +LowerPriority,
 %%                    +Situation, -HumanConsequence)
