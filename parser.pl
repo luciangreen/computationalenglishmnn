@@ -4,6 +4,14 @@
 %% and helper predicates for validating and querying the knowledge base.
 
 :- module(parser, [
+    system/1,
+    rule/4,
+    priority/3,
+    function/2,
+    ethical_rule/2,
+    time_complexity/3,
+    space_complexity/3,
+    interaction/3,
     validate_system/1,
     system_rules/2,
     system_priorities/2,
