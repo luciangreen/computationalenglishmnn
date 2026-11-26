@@ -49,7 +49,13 @@ Find all possible human effects of rules triggered by a user activity:
 % Rule2 = rule(chatbot1, r_hint,  user_asks_question, provide_hint)
 ```
 
-### 5. Check for ethical violations
+### 5. Check ethical requirements (formerly "violations")
+
+`ethical_requirement/4` (also available under its old name `ethical_violation/4`)
+lists what each rule's action must meet for a declared principle. It is a
+requirement to check against the system's real behaviour, not a finding that
+the rule breaks the principle.
+
 
 ```prolog
 ?- ethical_violation(chatbot1, RuleID, Principle, Description).
@@ -108,3 +114,10 @@ Find the dominant (highest-priority) rule:
 ?- all_systems(Systems).
 % Systems = [chatbot1]
 ```
+
+## Conflicts and tests
+
+Two rules with the same trigger conflict only if their actions cannot both
+be taken; each pair is reported once. `compatible_actions/2` lists actions
+that can go together, such as giving a hint and asking a follow-up question.
+Run the tests with `swipl -g "run_tests, halt" tests/test_analyser.pl`.
