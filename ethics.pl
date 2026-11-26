@@ -9,8 +9,17 @@
     missing_safeguard/3,
     ethical_assessment/4,
     known_ethical_principle/1,
-    ethical_violation/4
+    ethical_violation/4,
+    ethical_requirement/4
 ]).
+
+%% ethical_requirement(+System, -RuleID, -Principle, -Description)
+%% The preferred name for what ethical_violation/4 reports: a requirement a
+%% rule's action must meet for a declared principle. Whether the rule meets
+%% it depends on its real behaviour, which these facts do not show, so it is
+%% a requirement to check, not a finding that the rule breaks the principle.
+ethical_requirement(System, RuleID, Principle, Description) :-
+    ethical_violation(System, RuleID, Principle, Description).
 
 :- use_module(parser).
 

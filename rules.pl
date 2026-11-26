@@ -6,7 +6,8 @@
 :- module(rules, [
     rule_influence/5,
     rules_for_condition/3,
-    conflicting_rules/3
+    conflicting_rules/3,
+    compatible_actions/2
 ]).
 
 :- use_module(parser).
@@ -57,11 +58,25 @@ rules_for_condition(System, Condition, MatchingRules) :-
             MatchingRules).
 
 %% conflicting_rules(+System, -Rule1, -Rule2)
-%% Detects two rules with the same condition but different actions.
+%% Detects two rules with the same condition whose actions cannot both be
+%% taken. Each pair is reported once (in rule-identifier order), and actions
+%% that can go together, such as giving a hint and asking a follow-up
+%% question, are not a conflict.
 conflicting_rules(System, Rule1, Rule2) :-
     rule(System, ID1, Condition, Action1),
     rule(System, ID2, Condition, Action2),
-    ID1 \= ID2,
+    ID1 @< ID2,
     Action1 \= Action2,
+    \+ compatible_actions(Action1, Action2),
     Rule1 = rule(System,ID1,Condition,Action1),
     Rule2 = rule(System,ID2,Condition,Action2).
+
+%% compatible_actions(?Action1, ?Action2)
+%% Actions that can both be taken for the same trigger (either order).
+compatible_actions(A, B) :- compatible_pair(A, B), !.
+compatible_actions(A, B) :- compatible_pair(B, A), !.
+
+compatible_pair(provide_hint, ask_follow_up_question).
+compatible_pair(generate_answer, provide_source).
+compatible_pair(generate_answer, ask_follow_up_question).
+compatible_pair(log_interaction, _).
